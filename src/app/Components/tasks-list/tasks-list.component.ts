@@ -17,6 +17,8 @@ export class TasksListComponent implements OnInit, OnDestroy {
   overdueTasks: Tasks[] = [];
   type: 'house' | 'school' = 'house';
   statusFilter: 'all' | 'completed' | 'pending' = 'all';
+  selectedTaskId: string | null = null;
+  showConfirmModal: boolean = false;
   private timerId: any;
 
   constructor(private tasksService: TasksService, private router: Router) {}
@@ -85,4 +87,22 @@ export class TasksListComponent implements OnInit, OnDestroy {
   navigateToAddTask(): void {
     this.router.navigate(['/add-tasks']);
   }
+
+  confirmDeleteTask(id: string): void {
+    this.selectedTaskId = id;
+    this.showConfirmModal = true;
+  }
+  
+  closeConfirmModal(): void {
+    this.showConfirmModal = false;
+    this.selectedTaskId = null;
+  }
+  
+  deleteConfirmedTask(): void {
+    if (this.selectedTaskId) {
+      this.deleteTask(this.selectedTaskId);
+      this.closeConfirmModal();
+    }
+  }
+
 }
