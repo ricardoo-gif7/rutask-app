@@ -1,4 +1,4 @@
-<header class="app-header">
+<header *ngIf="!isSplashScreen()" class="app-header">
   <h1 class="app-title">RUTask App</h1>
 </header>
 <router-outlet></router-outlet>
