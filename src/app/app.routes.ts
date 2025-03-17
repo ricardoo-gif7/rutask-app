@@ -3,8 +3,12 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'tasks-list',
+    redirectTo: 'splash', // Ahora inicia en la pantalla de carga
     pathMatch: 'full'
+  },
+  {
+    path: 'splash',
+    loadComponent: () => import('./Components/splash-screen/splash-screen.component').then(m => m.SplashScreenComponent)
   },
   {
     path: 'tasks-list',

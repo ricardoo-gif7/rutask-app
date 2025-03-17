@@ -31,6 +31,8 @@ export class TasksDetailComponent implements OnInit, OnDestroy {
     if (id) {
       this.task = this.tasksService.getTaskById(id);
       this.checkDueDate();
+      
+      // Asegurarnos de que la verificación se ejecute cada segundo
       this.timerId = setInterval(() => this.checkDueDate(), 1000);
     }
   }
@@ -43,9 +45,10 @@ export class TasksDetailComponent implements OnInit, OnDestroy {
 
   checkDueDate(): void {
     if (this.task && !this.task.completed && this.task.dueDate) {
-      const now = new Date();
-      const due = new Date(this.task.dueDate);
-      this.showModal = now >= due;
+      const now = new Date().getTime(); // Hora actual en milisegundos
+      const due = new Date(this.task.dueDate).getTime(); // Convertimos la fecha límite
+  
+      this.showModal = now >= due; // Mostramos el aviso si la tarea ya debe cumplirse
     }
   }
 

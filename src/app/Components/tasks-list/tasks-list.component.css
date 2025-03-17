@@ -162,16 +162,19 @@
   
   .tabs {
     display: flex;
-    justify-content: center;
-    gap: 15px;
+    justify-content: center; /* Centra los botones */
+    gap: 15px; /* Espacio entre ellos */
     margin-bottom: 15px;
     width: 100%;
-}
+    flex-wrap: nowrap; /* Evita que se apilen */
+  }
+  
 
-.tabs button {
+  .tabs button {
     flex: 1; /* Se expanden automáticamente */
-    padding: 15px; /* Botones más grandes */
-    font-size: 1.3rem; /* Texto más claro */
+    max-width: 250px; /* Límite para que no sean demasiado grandes */
+    padding: 15px;
+    font-size: 1.3rem;
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -183,26 +186,21 @@
     cursor: pointer;
     color: var(--text-primary);
     transition: background-color 0.3s, transform 0.2s;
-}
+  }
 
-.tabs button span {
-    white-space: nowrap;
-}
-
-.tabs button:hover {
+  .tabs button:hover {
     transform: scale(1.05);
-}
-
-.tabs button.active {
+  }
+  
+  .tabs button.active {
     background-color: var(--accent-blue);
     color: white;
     border-color: var(--accent-blue-dark);
-}
-
-/* Para pantallas más pequeñas, los botones se apilan */
-@media (max-width: 600px) {
+  }
+  
+  /* Para pantallas más pequeñas */
+  @media (max-width: 600px) {
     .tabs {
-        flex-direction: column;
-        gap: 10px;
+      flex-wrap: wrap; /* Permite que los botones se ajusten si no caben */
     }
 }
