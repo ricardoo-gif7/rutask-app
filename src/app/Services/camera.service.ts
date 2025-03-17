@@ -7,6 +7,7 @@ import { Capacitor } from '@capacitor/core';
 })
 export class CameraService {
 
+  
   constructor() { }
 
   // Verifica permisos solo si es un dispositivo nativo
