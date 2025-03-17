@@ -1,206 +1,297 @@
 .tasks-list-container {
-    padding: 15px;
-    max-width: 1200px;
-    margin: 0 auto;
-    overflow-x: hidden;
-    color: var(--text-primary);
-  }
-  
-  .section-title {
-    text-align: center;
-    margin-bottom: 15px;
-  }
-  
-  .tabs {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 15px;
-  }
-  
-  .tabs button {
-    padding: 10px 20px;
-    background-color: var(--dark-surface);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    color: var(--text-primary);
-    transition: background-color 0.3s;
-    font-size: 1.2rem;
-  }
-  
-  .tabs button.active {
-    background-color: var(--accent-blue);
-    border-color: var(--accent-blue-dark);
-  }
-  
+  padding: 15px;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow-x: hidden;
+  color: var(--text-primary);
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* Botones de las pestañas (Casa / Escuela) */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.tabs button {
+  padding: 10px 20px;
+  background-color: var(--dark-surface);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: background-color 0.3s;
+  font-size: 1.2rem;
+}
+
+.tabs button.active {
+  background-color: var(--accent-blue);
+  border-color: var(--accent-blue-dark);
+}
+
+/* Filtro de estado (Todas, Hechas, Pendientes) */
+.filter-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-tabs button {
+  padding: 8px 15px;
+  background-color: var(--dark-surface);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: background-color 0.3s;
+  font-size: 0.9rem;
+}
+
+.filter-tabs button.active {
+  background-color: var(--accent-blue);
+  border-color: var(--accent-blue-dark);
+}
+
+/* Alerta de tareas vencidas */
+.overdue-alert {
+  background-color: rgba(255, 82, 82, 0.15);
+  border: 1px solid rgba(255, 82, 82, 0.3);
+  border-radius: var(--border-radius);
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.overdue-alert h3 {
+  color: var(--danger);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.overdue-task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.overdue-task:last-child {
+  border-bottom: none;
+}
+
+.quick-complete-btn {
+  background-color: var(--accent-blue);
+  color: white;
+  padding: 5px 10px;
+  border-radius: var(--border-radius);
+  font-size: 0.8rem;
+}
+
+/* Botón para cambiar el estado de las tareas */
+.status-toggle-btn {
+  width: 100%;
+  padding: 8px;
+  border-radius: var(--border-radius);
+  margin-top: 10px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.status-complete {
+  background-color: rgba(76, 175, 80, 0.15);
+  color: var(--success);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.status-pending {
+  background-color: rgba(255, 82, 82, 0.15);
+  color: var(--danger);
+  border: 1px solid rgba(255, 82, 82, 0.3);
+}
+
+.status-complete:hover {
+  background-color: rgba(76, 175, 80, 0.25);
+}
+
+.status-pending:hover {
+  background-color: rgba(255, 82, 82, 0.25);
+}
+
+/* Grilla de tareas */
+.tasks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.task-card {
+  background-color: var(--dark-bg-secondary);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card-subject {
+  padding: 8px 12px;
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+}
+
+.subject-text {
+  color: #333; /* Texto oscuro para buen contraste */
+  font-weight: bold;
+}
+
+.card-header {
+  padding: 12px 15px;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.due-date {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.card-content {
+  padding: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.report-description {
+  margin-bottom: 15px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  font-size: 0.95rem;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.action-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.view-btn:hover {
+  background-color: rgba(0, 133, 255, 0.2);
+  color: var(--accent-blue);
+}
+
+.delete-btn:hover {
+  background-color: rgba(255, 82, 82, 0.2);
+  color: var(--danger);
+}
+
+.no-reports {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+/* Botón flotante para agregar tarea */
+.add-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--accent-blue);
+  color: white;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 133, 255, 0.3);
+  z-index: 100;
+  border: none;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background-color: var(--accent-blue-dark);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
   .tasks-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 10px 0;
+    grid-template-columns: 1fr;
+    gap: 15px;
   }
-  
-  .task-card {
-    background-color: var(--dark-bg-secondary);
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: var(--card-shadow);
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-  
-  .card-subject {
-    padding: 8px 12px;
-    border-top-left-radius: var(--border-radius);
-    border-top-right-radius: var(--border-radius);
-  }
-  
-  .subject-text {
-    color: #333; /* Texto oscuro para buen contraste */
-    font-weight: bold;
-  }
-  
-  .card-header {
-    padding: 12px 15px;
-    background-color: rgba(0, 0, 0, 0.2);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .due-date {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-  }
-  
-  .card-content {
-    padding: 15px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .report-description {
-    margin-bottom: 15px;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    font-size: 0.95rem;
-  }
-  
-  .card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-  
-  .action-btn {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(255,255,255,0.05);
-    transition: background-color 0.2s ease, transform 0.2s ease;
-    cursor: pointer;
-  }
-  
-  .view-btn:hover {
-    background-color: rgba(0, 133, 255, 0.2);
-    color: var(--accent-blue);
-  }
-  
-  .delete-btn:hover {
-    background-color: rgba(255, 82, 82, 0.2);
-    color: var(--danger);
-  }
-  
-  .no-reports {
-    text-align: center;
-    padding: 40px 0;
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-  }
-  
-  .add-btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: var(--accent-blue);
-    color: white;
-    font-size: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    box-shadow: 0 4px 12px rgba(0,133,255,0.3);
-    z-index: 100;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .add-btn:hover {
-    background-color: var(--accent-blue-dark);
-  }
-  
-  /* Responsividad */
-  @media (max-width: 768px) {
-    .tasks-grid {
-      grid-template-columns: 1fr;
-      gap: 15px;
-    }
-  }
-  
+}
+
+.tabs {
+  display: flex;
+  justify-content: center; /* Centra los botones */
+  gap: 15px; /* Espacio entre ellos */
+  margin-bottom: 15px;
+  width: 100%;
+  flex-wrap: nowrap; /* Evita que se apilen */
+}
+
+.tabs button {
+  flex: 1; /* Se expanden automáticamente */
+  max-width: 250px; /* Límite para que no sean demasiado grandes */
+  padding: 15px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: var(--dark-surface);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.tabs button:hover {
+  transform: scale(1.05);
+}
+
+.tabs button.active {
+  background-color: var(--accent-blue);
+  color: white;
+  border-color: var(--accent-blue-dark);
+}
+
+/* Para pantallas más pequeñas */
+@media (max-width: 600px) {
   .tabs {
-    display: flex;
-    justify-content: center; /* Centra los botones */
-    gap: 15px; /* Espacio entre ellos */
-    margin-bottom: 15px;
-    width: 100%;
-    flex-wrap: nowrap; /* Evita que se apilen */
+    flex-wrap: wrap; /* Permite que los botones se ajusten si no caben */
   }
-  
-
-  .tabs button {
-    flex: 1; /* Se expanden automáticamente */
-    max-width: 250px; /* Límite para que no sean demasiado grandes */
-    padding: 15px;
-    font-size: 1.3rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    background-color: var(--dark-surface);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    color: var(--text-primary);
-    transition: background-color 0.3s, transform 0.2s;
-  }
-
-  .tabs button:hover {
-    transform: scale(1.05);
-  }
-  
-  .tabs button.active {
-    background-color: var(--accent-blue);
-    color: white;
-    border-color: var(--accent-blue-dark);
-  }
-  
-  /* Para pantallas más pequeñas */
-  @media (max-width: 600px) {
-    .tabs {
-      flex-wrap: wrap; /* Permite que los botones se ajusten si no caben */
-    }
 }
