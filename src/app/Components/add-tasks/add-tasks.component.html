@@ -1,0 +1,34 @@
+<div class="add-task-container container">
+    <h2>Agregar Tarea</h2>
+    <label for="title">Título (Actividad o Materia):</label>
+    <input id="title" [(ngModel)]="title" placeholder="Título de la tarea" />
+  
+    <label for="description">Descripción:</label>
+    <textarea id="description" [(ngModel)]="description" placeholder="Descripción de la tarea"></textarea>
+  
+    <label for="dueDate">Fecha Límite:</label>
+    <!-- Usamos datetime-local para incluir fecha y hora -->
+    <input type="datetime-local" id="dueDate" [(ngModel)]="dueDate" />
+  
+    <label for="type">Tipo:</label>
+    <select id="type" [(ngModel)]="type">
+      <option value="house">Tarea del Hogar</option>
+      <option value="school">Deber Escolar</option>
+    </select>
+  
+    <!-- Solo para deberes: se ingresa la materia -->
+    <div *ngIf="type === 'school'">
+      <label for="subject">Materia:</label>
+      <input id="subject" [(ngModel)]="subject" placeholder="Materia" />
+    </div>
+  
+    <!-- Botón para tomar foto (opcional) -->
+    <button type="button" (click)="takePhoto()" class="camera-btn">📷 Tomar Foto</button>
+    <div *ngIf="photo" class="photo-preview">
+      <img [src]="photo" alt="Foto tomada" class="preview-image">
+    </div>
+  
+    <button (click)="saveTask()" class="submit-btn">Guardar Tarea</button>
+    <button routerLink="/tasks-list" class="cancel-btn">Cancelar</button>
+  </div>
+  

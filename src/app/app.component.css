@@ -1,0 +1,28 @@
+.app-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 0;
+    background: linear-gradient(135deg, var(--dark-bg-secondary), var(--dark-surface));
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .app-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: center;
+  }
+  
+  /* Responsividad para pantallas pequeñas */
+  @media (max-width: 600px) {
+    .app-title {
+      font-size: 1.4rem;
+    }
+  }
+  

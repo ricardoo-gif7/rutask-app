@@ -1,0 +1,218 @@
+.report-detail-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    color: var(--text-primary);
+  }
+  
+  .form-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    position: relative;
+  }
+  
+  .back-btn {
+    position: absolute;
+    left: 0;
+    color: var(--text-primary);
+    background: transparent;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .back-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .page-title {
+    text-align: center;
+    flex-grow: 1;
+    margin: 0;
+  }
+  
+  .edit-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-primary);
+  }
+  
+  .edit-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .detail-card {
+    background-color: var(--dark-surface);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 20px;
+    padding: 20px;
+  }
+  
+  .detail-field label {
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .edit-input, .edit-textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255,255,255,0.2);
+    background-color: var(--dark-bg-secondary);
+    color: var(--text-primary);
+  }
+  
+  .edit-textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  
+  .card-image {
+    width: 100%;
+    height: auto;
+    max-height: 350px;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.4);
+    margin: 15px 0;
+  }
+  
+  .report-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .report-image:hover {
+    transform: scale(1.05);
+  }
+  
+  .no-image {
+    text-align: center;
+    margin: 15px 0;
+  }
+  
+  .add-photo-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: var(--accent-blue);
+    color: white;
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+  }
+  
+  .action-btn {
+    flex: 1;
+    padding: 12px 15px;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .status-btn {
+    background-color: var(--accent-blue);
+    color: white;
+  }
+  
+  .delete-button {
+    background-color: rgba(255,82,82,0.15);
+    color: var(--danger);
+    border: 1px solid rgba(255,82,82,0.3);
+  }
+  
+  .delete-button:hover {
+    background-color: rgba(255,82,82,0.25);
+  }
+  
+  .not-found {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: var(--dark-bg);
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    color: var(--text-primary);
+  }
+  
+  .confirm-btn {
+    background-color: var(--accent-blue);
+    color: white;
+    margin-top: 15px;
+  }
+  
+  /* Responsividad para móviles */
+  @media (max-width: 600px) {
+    .report-detail-container {
+      margin: 10px;
+      padding: 15px;
+    }
+    .action-buttons {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+  .edit-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-primary);
+  }
+  
+  .big-photo-btn {
+    padding: 15px;
+    font-size: 1rem;
+    background-color: var(--accent-blue);
+    color: white;
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+  }
+  

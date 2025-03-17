@@ -1,0 +1,130 @@
+/* Estilos globales - styles.css */
+:root {
+    --dark-bg: #121212;
+    --dark-bg-secondary: #1e1e1e;
+    --dark-surface: #272727;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --accent-blue: #0085FF;
+    --accent-blue-dark: #0065c8;
+    --danger: #ff5252;
+    --success: #4caf50;
+    --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    --header-height: 60px;
+    --border-radius: 12px;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+    width: 100%;
+    background-color: var(--dark-bg);
+    color: var(--text-primary);
+    font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  
+  /* Tipografía responsiva */
+  h1 {
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    font-weight: 600;
+    margin-bottom: 0.5em;
+    color: white;
+  }
+  
+  h2 {
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    font-weight: 500;
+    margin-bottom: 0.5em;
+  }
+  
+  p {
+    font-size: clamp(0.9rem, 3vw, 1rem);
+    line-height: 1.5;
+  }
+  
+  /* Diseño responsivo base */
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
+  }
+  
+  button {
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    transition: background-color 0.3s, transform 0.1s;
+  }
+  
+  button:hover {
+    transform: translateY(-2px);
+  }
+  
+  button:active {
+    transform: translateY(1px);
+  }
+  
+  /* Animaciones y transiciones */
+  .fade-in {
+    animation: fadeIn 0.3s ease-in;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  /* Scrollbar personalizado para Chrome */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--dark-bg);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #777;
+  }
+  
+  /* Media queries para diferentes tamaños de pantalla */
+  @media screen and (max-width: 600px) {
+    .container {
+      padding: 10px;
+    }
+  }
+  
+  /* Utilities */
+  .text-center {
+    text-align: center;
+  }
+  
+  .mt-1 {
+    margin-top: 0.5rem;
+  }
+  
+  .mt-2 {
+    margin-top: 1rem;
+  }
+  
+  .mb-1 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .mb-2 {
+    margin-bottom: 1rem;
+  }
+  
