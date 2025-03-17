@@ -338,3 +338,8 @@
   border-radius: var(--border-radius);
   cursor: pointer;
 }
+
+.action-btn svg {
+  fill: white; /* Hace que los íconos sean blancos */
+}
+
