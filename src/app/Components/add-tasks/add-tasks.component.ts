@@ -6,39 +6,40 @@ import { Tasks } from '../../models/tasks.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CameraService } from '../../Services/camera.service';
+
 @Component({
   selector: 'app-add-tasks',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './add-tasks.component.html',
-  styleUrls: ['./add-tasks.component.css']
+  styleUrls: ['./add-tasks.component.css'],
 })
 export class AddTasksComponent implements OnInit {
-  // Campos básicos
-  title: string = '';
-  description: string = '';
-  dueDate: string = '';
-  dueTime: string = '';
+  /* ------------------------------ CAMPOS BÁSICOS ------------------------------ */
+  title = '';
+  description = '';
+  dueDate = '';
+  dueTime = '';
   photo?: string;
   type: 'house' | 'school' = 'house';
   subject?: string;
 
-  // Campos para tareas diarias
-  isDaily: boolean = false;
-  notificationEnabled: boolean = false;
-  notificationTime: string = '';
-  notificationPermission: boolean = false;
+  /* --------------------------- TAREAS DIARIAS & NOTIF -------------------------- */
+  isDaily = false;
+  notificationEnabled = false;
+  notificationTime = '';
+  notificationPermission = false;
 
-  // Control de errores
-  titleError: string = '';
-  dueDateError: string = '';
-  dueTimeError: string = '';
-  subjectError: string = '';
-  notificationTimeError: string = '';
-  generalError: string = '';
+  /* --------------------------------- ERRORES ---------------------------------- */
+  titleError = '';
+  dueDateError = '';
+  dueTimeError = '';
+  subjectError = '';
+  notificationTimeError = '';
+  generalError = '';
 
-  // Estado del componente
-  isSaving: boolean = false;
+  /* ----------------------------- ESTADO COMPONENTE ---------------------------- */
+  isSaving = false;
 
   constructor(
     private tasksService: TasksService,
@@ -47,83 +48,109 @@ export class AddTasksComponent implements OnInit {
     private cameraService: CameraService
   ) {}
 
+  /* --------------------------------------------------------------------------- */
+  /*                                   CICLO                                    */
+  /* --------------------------------------------------------------------------- */
   ngOnInit(): void {
     this.checkNotificationPermission();
     this.setDefaultDueDate();
   }
 
-  /**
-   * Verifica los permisos de notificación
-   */
+  /* --------------------------------------------------------------------------- */
+  /*                        PERMISOS DE NOTIFICACIONES                           */
+  /* --------------------------------------------------------------------------- */
   private checkNotificationPermission(): void {
-    this.notificationPermission = this.notificationService.areNotificationsSupported() &&
-      this.notificationService.getNotificationPermission() === 'granted';
+    if (this.notificationService.areNotificationsSupported()) {
+      this.notificationPermission =
+        this.notificationService.getNotificationPermission() === 'granted';
+    } else {
+      this.notificationPermission = false;
+    }
   }
 
-  /**
-   * Establece la fecha por defecto (mañana)
-   */
+  /* ----------------------------- FECHA POR DEFECTO ---------------------------- */
   private setDefaultDueDate(): void {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     this.dueDate = tomorrow.toISOString().split('T')[0];
   }
 
-  /**
-   * Maneja el cambio en el checkbox de tarea diaria
-   */
+  /* --------------------------------------------------------------------------- */
+  /*                           BOTONES‑SWITCH HANDLERS                           */
+  /* --------------------------------------------------------------------------- */
+  toggleDaily(): void {
+    this.isDaily = !this.isDaily;
+    this.onDailyChange();
+  }
+
+  toggleNotification(): void {
+    this.notificationEnabled = !this.notificationEnabled;
+    this.onNotificationToggle();
+  }
+
+  /* ----------------------- LÓGICA DE CAMBIO DIARIO ---------------------------- */
   onDailyChange(): void {
     if (this.isDaily) {
+      // Limpiar campos de fecha/hora
       this.dueDate = '';
       this.dueTime = '';
-      this.dueDateError = '';
-      this.dueTimeError = '';
+      this.clearDateErrors();
     } else {
       this.setDefaultDueDate();
     }
   }
 
-  /**
-   * Maneja el cambio en el checkbox de notificaciones
-   */
+  private clearDateErrors(): void {
+    this.dueDateError = '';
+    this.dueTimeError = '';
+  }
+
+  /* --------------------- LÓGICA DE CAMBIO NOTIFICACIONES ---------------------- */
   onNotificationToggle(): void {
     if (this.notificationEnabled && !this.notificationPermission) {
-      // Solicitar permisos si no están otorgados
       this.requestNotificationPermission();
     }
-    
     if (!this.notificationEnabled) {
       this.notificationTime = '';
       this.notificationTimeError = '';
     }
   }
 
-  /**
-   * Solicita permisos de notificación
-   */
   private async requestNotificationPermission(): Promise<void> {
     try {
+      if (!this.notificationService.areNotificationsSupported()) {
+        this.notificationEnabled = false;
+        this.generalError =
+          'Las notificaciones no están soportadas en este navegador';
+        return;
+      }
+
       const permission = await Notification.requestPermission();
       this.notificationPermission = permission === 'granted';
-      
+
       if (!this.notificationPermission) {
         this.notificationEnabled = false;
+        this.generalError =
+          'Es necesario otorgar permisos de notificación para recibir recordatorios';
       }
     } catch (error) {
       console.error('Error al solicitar permisos de notificación:', error);
       this.notificationEnabled = false;
+      this.generalError = 'Error al solicitar permisos de notificación';
     }
   }
 
-  /**
-   * Validaciones individuales
-   */
+  /* --------------------------------------------------------------------------- */
+  /*                              VALIDACIONES UI                                */
+  /* --------------------------------------------------------------------------- */
   validateTitle(): void {
     this.titleError = '';
     if (!this.title.trim()) {
       this.titleError = 'El título es requerido';
     } else if (this.title.trim().length < 3) {
       this.titleError = 'El título debe tener al menos 3 caracteres';
+    } else if (this.title.trim().length > 100) {
+      this.titleError = 'El título no puede exceder 100 caracteres';
     }
   }
 
@@ -134,6 +161,8 @@ export class AddTasksComponent implements OnInit {
         this.subjectError = 'La materia es requerida para deberes escolares';
       } else if (this.subject.trim().length < 2) {
         this.subjectError = 'La materia debe tener al menos 2 caracteres';
+      } else if (this.subject.trim().length > 50) {
+        this.subjectError = 'La materia no puede exceder 50 caracteres';
       }
     }
   }
@@ -146,8 +175,10 @@ export class AddTasksComponent implements OnInit {
       const selectedDate = new Date(this.dueDate);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      
-      if (selectedDate < today) {
+
+      if (isNaN(selectedDate.getTime())) {
+        this.dueDateError = 'Formato de fecha inválido';
+      } else if (selectedDate < today) {
         this.dueDateError = 'La fecha límite no puede ser anterior a hoy';
       }
     }
@@ -155,8 +186,23 @@ export class AddTasksComponent implements OnInit {
 
   validateDueTime(): void {
     this.dueTimeError = '';
-    if (this.dueTime && !this.notificationService.isValidTime(this.dueTime)) {
-      this.dueTimeError = 'Formato de hora inválido';
+    if (this.dueTime && !this.isValidTimeFormat(this.dueTime)) {
+      this.dueTimeError = 'Formato de hora inválido (use HH:MM)';
+    }
+
+    if (!this.isDaily && this.dueDate && this.dueTime) {
+      const selectedDate = new Date(this.dueDate);
+      const today = new Date();
+
+      if (this.isSameDay(selectedDate, today)) {
+        const [hours, minutes] = this.dueTime.split(':').map(Number);
+        const selectedDateTime = new Date();
+        selectedDateTime.setHours(hours, minutes, 0, 0);
+
+        if (selectedDateTime <= new Date()) {
+          this.dueTimeError = 'La hora límite no puede ser en el pasado';
+        }
+      }
     }
   }
 
@@ -165,15 +211,27 @@ export class AddTasksComponent implements OnInit {
     if (this.notificationEnabled) {
       if (!this.notificationTime) {
         this.notificationTimeError = 'La hora de notificación es requerida';
-      } else if (!this.notificationService.isValidTime(this.notificationTime)) {
-        this.notificationTimeError = 'Formato de hora inválido';
+      } else if (!this.isValidTimeFormat(this.notificationTime)) {
+        this.notificationTimeError = 'Formato de hora inválido (use HH:MM)';
       }
     }
   }
 
-  /**
-   * Validación completa del formulario
-   */
+  private isValidTimeFormat(time: string): boolean {
+    return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(time);
+  }
+
+  private isSameDay(date1: Date, date2: Date): boolean {
+    return (
+      date1.getDate() === date2.getDate() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getFullYear() === date2.getFullYear()
+    );
+  }
+
+  /* --------------------------------------------------------------------------- */
+  /*                          VALIDACIÓN COMPLETA FORM                            */
+  /* --------------------------------------------------------------------------- */
   private validateForm(): boolean {
     this.validateTitle();
     this.validateSubject();
@@ -181,7 +239,6 @@ export class AddTasksComponent implements OnInit {
     this.validateDueTime();
     this.validateNotificationTime();
 
-    // Verificar si hay errores
     const hasErrors = !!(
       this.titleError ||
       this.subjectError ||
@@ -195,27 +252,45 @@ export class AddTasksComponent implements OnInit {
       return false;
     }
 
+    if (this.notificationEnabled && !this.notificationPermission) {
+      this.generalError = 'Es necesario otorgar permisos de notificación';
+      return false;
+    }
+
     this.generalError = '';
     return true;
   }
 
-  /**
-   * Toma una foto usando el servicio de cámara
-   */
+  /* --------------------------------------------------------------------------- */
+  /*                                   CÁMARA                                    */
+  /* --------------------------------------------------------------------------- */
   takePhoto(): void {
-    this.cameraService.takePicture().then(photoUrl => {
-      this.photo = photoUrl;
-    }).catch(err => {
-      console.error('Error al tomar la foto:', err);
-      this.generalError = 'Error al tomar la foto. Inténtalo de nuevo.';
-    });
+    this.cameraService
+      .takePicture()
+      .then((photoUrl) => {
+        this.photo = photoUrl;
+        this.generalError = '';
+      })
+      .catch((err) => {
+        console.error('Error al tomar la foto:', err);
+        this.generalError =
+          'Error al tomar la foto. Inténtalo de nuevo.';
+      });
   }
 
-  /**
-   * Asigna un color pastel basado en la materia para deberes
-   */
+  /* --------------------------------------------------------------------------- */
+  /*                          UTILIDADES PARA LA TAREA                           */
+  /* --------------------------------------------------------------------------- */
   private getColorForSubject(subject: string): string {
-    const colors = ["#FFB3BA", "#BAE1FF", "#BAFFC9", "#FFFFBA", "#FFDFBA", "#BAFFC9", "#D5BAFF"];
+    const colors = [
+      '#FFB3BA',
+      '#BAE1FF',
+      '#BAFFC9',
+      '#FFFFBA',
+      '#FFDFBA',
+      '#E6BAFF',
+      '#D5BAFF',
+    ];
     let sum = 0;
     for (let i = 0; i < subject.length; i++) {
       sum += subject.charCodeAt(i);
@@ -223,70 +298,100 @@ export class AddTasksComponent implements OnInit {
     return colors[sum % colors.length];
   }
 
-  /**
-   * Genera un ID único para la tarea
-   */
   private generateId(): string {
     return Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
   }
 
-  /**
-   * Guarda la tarea después de validar
-   */
-  saveTask(): void {
-    if (!this.validateForm()) {
-      return;
-    }
+  private buildDateTime(): string {
+    if (this.isDaily) return '';
+    let dateTime = this.dueDate;
+    dateTime += this.dueTime ? `T${this.dueTime}:00` : 'T23:59:59';
+    return dateTime;
+  }
+
+  /* --------------------------------------------------------------------------- */
+  /*                                GUARDAR TAREA                                */
+  /* --------------------------------------------------------------------------- */
+  async saveTask(): Promise<void> {
+    if (!this.validateForm()) return;
 
     this.isSaving = true;
     this.generalError = '';
 
     try {
-      const subjectColor = this.type === 'school' && this.subject ? 
-        this.getColorForSubject(this.subject) : undefined;
-
-      // Combinar fecha y hora para tareas no diarias
-      let combinedDateTime = '';
-      if (!this.isDaily) {
-        combinedDateTime = this.dueDate;
-        if (this.dueTime) {
-          combinedDateTime += `T${this.dueTime}`;
-        }
-      }
+      const subjectColor =
+        this.type === 'school' && this.subject
+          ? this.getColorForSubject(this.subject)
+          : undefined;
 
       const newTask: Tasks = {
         id: this.generateId(),
         title: this.title.trim(),
         description: this.description.trim() || undefined,
         completed: false,
-        dueDate: combinedDateTime,
+        dueDate: this.buildDateTime(),
         dueTime: this.dueTime || undefined,
         photo: this.photo,
         type: this.type,
         subject: this.type === 'school' ? this.subject?.trim() : undefined,
-        subjectColor: subjectColor,
+        subjectColor,
         createdAt: new Date().toISOString(),
-        
-        // Campos para tareas diarias
+
         isDaily: this.isDaily,
-        notificationTime: this.notificationEnabled ? this.notificationTime : undefined,
+        notificationTime: this.notificationEnabled
+          ? this.notificationTime
+          : undefined,
         notificationEnabled: this.notificationEnabled,
-        lastCompleted: undefined
+        lastCompleted: undefined,
       };
 
-      // Guardar la tarea
-      this.tasksService.addTask(newTask);
+      await this.tasksService.addTask(newTask);
 
-      // Programar notificación si está habilitada
       if (this.notificationEnabled && this.notificationTime) {
-        this.notificationService.scheduleNotification(newTask);
+        try {
+          await this.notificationService.scheduleNotification(newTask);
+        } catch (notificationError) {
+          console.warn(
+            'Error al programar la notificación:',
+            notificationError
+          );
+        }
       }
+
+      this.router.navigate(['/tasks-list']);
     } catch (error) {
       console.error('Error al guardar la tarea:', error);
       this.generalError = 'Error al guardar la tarea. Inténtalo de nuevo.';
     } finally {
       this.isSaving = false;
     }
-    this.router.navigate(['/tasks-list']);
+  }
+
+  /* --------------------------------------------------------------------------- */
+  /*                                RESET FORM                                   */
+  /* --------------------------------------------------------------------------- */
+  private clearAllErrors(): void {
+    this.titleError = '';
+    this.dueDateError = '';
+    this.dueTimeError = '';
+    this.subjectError = '';
+    this.notificationTimeError = '';
+    this.generalError = '';
+  }
+
+  resetForm(): void {
+    this.title = '';
+    this.description = '';
+    this.dueDate = '';
+    this.dueTime = '';
+    this.photo = undefined;
+    this.type = 'house';
+    this.subject = undefined;
+    this.isDaily = false;
+    this.notificationEnabled = false;
+    this.notificationTime = '';
+
+    this.clearAllErrors();
+    this.setDefaultDueDate();
   }
 }

@@ -1,3 +1,4 @@
+/* --- CONTENEDOR PRINCIPAL --- */
 .add-task-container {
   padding: 20px;
   max-width: 600px;
@@ -20,6 +21,7 @@
   font-size: 1.2rem;
 }
 
+/* --- CAMPOS DE FORMULARIO --- */
 .add-task-container label {
   display: block;
   margin-top: 10px;
@@ -34,7 +36,7 @@
   padding: 12px 15px;
   border-radius: var(--border-radius);
   background-color: var(--dark-surface);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--text-primary);
   font-size: 1rem;
   margin-top: 5px;
@@ -53,13 +55,12 @@
   min-height: 120px;
 }
 
-/* Estilos para campos con errores */
+/* --- ERRORES --- */
 .error {
   border-color: var(--danger) !important;
   background-color: rgba(255, 82, 82, 0.1);
 }
 
-/* Mensajes de error */
 .error-message {
   color: var(--danger);
   font-size: 0.85rem;
@@ -76,7 +77,7 @@
   font-weight: 500;
 }
 
-/* Mensajes de advertencia */
+/* --- ADVERTENCIAS --- */
 .warning-message {
   color: #ff9800;
   font-size: 0.9rem;
@@ -87,7 +88,7 @@
   border-left: 4px solid #ff9800;
 }
 
-/* Texto de ayuda */
+/* --- TEXTO DE AYUDA --- */
 .help-text {
   color: var(--text-secondary);
   font-size: 0.85rem;
@@ -95,8 +96,8 @@
   font-style: italic;
 }
 
-/* Contenedor para checkboxes */
-.checkbox-container {
+/* --- BOTONES‑SWITCH --- */
+.toggle-container {
   display: flex;
   align-items: center;
   margin-top: 15px;
@@ -105,20 +106,28 @@
   border-radius: var(--border-radius);
 }
 
-.checkbox-container input[type="checkbox"] {
-  width: auto;
-  margin-right: 10px;
-  margin-top: 0;
-  transform: scale(1.2);
-}
-
-.checkbox-label {
-  margin: 0;
-  cursor: pointer;
+.toggle-btn {
+  padding: 12px 18px;
+  border-radius: var(--border-radius);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
   font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
-/* Sección de notificaciones */
+.toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.toggle-btn.active {
+  background-color: var(--accent-blue);
+  color: #fff;
+  border-color: var(--accent-blue-dark);
+}
+
+/* --- SECCIÓN NOTIFICACIONES --- */
 .notification-section {
   margin-top: 25px;
   padding: 20px;
@@ -127,54 +136,38 @@
   border-left: 4px solid var(--accent-blue);
 }
 
-.camera-btn {
+/* --- BOTÓN CÁMARA, SUBMIT Y CANCELAR --- */
+.camera-btn,
+.submit-btn,
+.cancel-btn {
   width: 100%;
-  padding: 12px;
-  background-color: var(--dark-surface);
-  color: var(--text-primary);
+  padding: 15px;
   border-radius: var(--border-radius);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
   font-weight: 500;
-  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 1rem;
   margin-top: 10px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
-.camera-btn:hover {
-  background-color: rgba(255,255,255,0.1);
-}
-
-.photo-preview {
-  margin-top: 15px;
-  width: 100%;
-  height: 200px;
-  border-radius: var(--border-radius);
-  overflow: hidden;
+.camera-btn {
   background-color: var(--dark-surface);
-  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.preview-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.camera-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .submit-btn {
-  width: 100%;
-  padding: 15px;
-  background-color: var(--accent-blue);
-  color: white;
-  border-radius: var(--border-radius);
-  font-weight: 500;
-  font-size: 1rem;
   margin-top: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  background-color: var(--accent-blue);
+  color: #fff;
   border: none;
 }
 
@@ -188,55 +181,55 @@
 }
 
 .cancel-btn {
-  width: 100%;
-  padding: 15px;
   background-color: #555;
-  color: white;
-  border-radius: var(--border-radius);
-  font-weight: 500;
-  font-size: 1rem;
-  margin-top: 10px;
-  cursor: pointer;
+  color: #fff;
   border: none;
-  transition: background-color 0.3s;
 }
 
 .cancel-btn:hover {
   background-color: #666;
 }
 
-/* Campos obligatorios */
-label::after {
-  content: "";
+/* --- PREVIEW FOTO --- */
+.photo-preview {
+  margin-top: 15px;
+  width: 100%;
+  height: 200px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  background-color: var(--dark-surface);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-label[for="title"]::after,
-label[for="dueDate"]::after,
-label[for="subject"]::after,
-label[for="notificationTime"]::after {
-  content: " *";
+.preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- CAMPOS OBLIGATORIOS (asterisco) --- */
+label[for='title']::after,
+label[for='dueDate']::after,
+label[for='subject']::after,
+label[for='notificationTime']::after {
+  content: ' *';
   color: var(--danger);
 }
 
-/* Responsividad */
+/* --- RESPONSIVIDAD --- */
 @media (max-width: 600px) {
   .add-task-container {
     margin: 10px;
     padding: 15px;
   }
-  
   .notification-section {
     padding: 15px;
   }
 }
 
-/* Animaciones para los campos que aparecen/desaparecen */
+/* --- ANIMACIONES PARA CAMPOS QUE APARECEN --- */
 .field-enter {
   animation: fadeIn 0.3s ease-in-out;
-}
-
-.field-leave {
-  animation: fadeOut 0.3s ease-in-out;
 }
 
 @keyframes fadeIn {
@@ -247,16 +240,5 @@ label[for="notificationTime"]::after {
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-10px);
   }
 }

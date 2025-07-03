@@ -1,11 +1,11 @@
 <div class="add-task-container container">
   <h2>Agregar Tarea</h2>
-  
+
   <!-- Título (requerido) -->
   <label for="title">Título (Actividad o Materia) *:</label>
-  <input 
-    id="title" 
-    [(ngModel)]="title" 
+  <input
+    id="title"
+    [(ngModel)]="title"
     placeholder="Título de la tarea"
     [class.error]="titleError"
     (blur)="validateTitle()"
@@ -14,9 +14,9 @@
 
   <!-- Descripción (opcional) -->
   <label for="description">Descripción:</label>
-  <textarea 
-    id="description" 
-    [(ngModel)]="description" 
+  <textarea
+    id="description"
+    [(ngModel)]="description"
     placeholder="Descripción de la tarea (opcional)"
   ></textarea>
 
@@ -27,12 +27,12 @@
     <option value="school">Deber Escolar</option>
   </select>
 
-  <!-- Solo para deberes: se ingresa la materia -->
+  <!-- Solo para deberes: materia -->
   <div *ngIf="type === 'school'">
     <label for="subject">Materia *:</label>
-    <input 
-      id="subject" 
-      [(ngModel)]="subject" 
+    <input
+      id="subject"
+      [(ngModel)]="subject"
       placeholder="Materia"
       [class.error]="subjectError"
       (blur)="validateSubject()"
@@ -40,36 +40,34 @@
     <div *ngIf="subjectError" class="error-message">{{ subjectError }}</div>
   </div>
 
-  <!-- Checkbox para tarea diaria -->
-  <div class="checkbox-container">
-    <input 
-      type="checkbox" 
-      id="isDaily" 
-      [(ngModel)]="isDaily"
-      (change)="onDailyChange()"
-    />
-    <label for="isDaily" class="checkbox-label">Esta es una tarea diaria</label>
+  <!-- Botón‑switch: tarea diaria -->
+  <div class="toggle-container">
+    <button
+      type="button"
+      class="toggle-btn"
+      [class.active]="isDaily"
+      (click)="toggleDaily()"
+    >
+      {{ isDaily ? '✅ Tarea Diaria Activada' : '🕓 Tarea Diaria Desactivada' }}
+    </button>
   </div>
 
-  <!-- Fecha límite (solo si no es tarea diaria) -->
-  <div *ngIf="!isDaily">
+  <!-- Fecha y hora límite (solo si NO es diaria) -->
+  <div *ngIf="!isDaily" class="field-enter">
     <label for="dueDate">Fecha Límite *:</label>
-    <input 
-      type="date" 
-      id="dueDate" 
+    <input
+      type="date"
+      id="dueDate"
       [(ngModel)]="dueDate"
       [class.error]="dueDateError"
       (blur)="validateDueDate()"
     />
     <div *ngIf="dueDateError" class="error-message">{{ dueDateError }}</div>
-  </div>
 
-  <!-- Hora límite (separada) -->
-  <div *ngIf="!isDaily">
     <label for="dueTime">Hora Límite:</label>
-    <input 
-      type="time" 
-      id="dueTime" 
+    <input
+      type="time"
+      id="dueTime"
       [(ngModel)]="dueTime"
       [class.error]="dueTimeError"
       (blur)="validateDueTime()"
@@ -77,54 +75,70 @@
     <div *ngIf="dueTimeError" class="error-message">{{ dueTimeError }}</div>
   </div>
 
-  <!-- Configuración de notificaciones -->
+  <!-- Sección de notificaciones -->
   <div class="notification-section">
     <h3>Notificaciones</h3>
-    
-    <!-- Habilitar notificaciones -->
-    <div class="checkbox-container">
-      <input 
-        type="checkbox" 
-        id="notificationEnabled" 
-        [(ngModel)]="notificationEnabled"
-        (change)="onNotificationToggle()"
-      />
-      <label for="notificationEnabled" class="checkbox-label">
-        Recibir notificaciones
-      </label>
+
+    <!-- Botón‑switch: habilitar notificaciones -->
+    <div class="toggle-container">
+      <button
+        type="button"
+        class="toggle-btn"
+        [class.active]="notificationEnabled"
+        (click)="toggleNotification()"
+      >
+        {{
+          notificationEnabled
+            ? '🔔 Notificaciones Activadas'
+            : '🔕 Notificaciones Desactivadas'
+        }}
+      </button>
     </div>
 
     <!-- Hora de notificación -->
-    <div *ngIf="notificationEnabled">
+    <div *ngIf="notificationEnabled" class="field-enter">
       <label for="notificationTime">Hora de notificación *:</label>
-      <input 
-        type="time" 
-        id="notificationTime" 
+      <input
+        type="time"
+        id="notificationTime"
         [(ngModel)]="notificationTime"
         [class.error]="notificationTimeError"
         (blur)="validateNotificationTime()"
       />
-      <div *ngIf="notificationTimeError" class="error-message">{{ notificationTimeError }}</div>
+      <div
+        *ngIf="notificationTimeError"
+        class="error-message"
+      >
+        {{ notificationTimeError }}
+      </div>
       <small class="help-text">
-        {{ isDaily ? 'Recibirás una notificación diaria a esta hora' : 'Recibirás una notificación en la fecha y hora especificadas' }}
+        {{
+          isDaily
+            ? 'Recibirás una notificación diaria a esta hora'
+            : 'Recibirás una notificación en la fecha y hora especificadas'
+        }}
       </small>
     </div>
 
-    <!-- Advertencia sobre permisos -->
-    <div *ngIf="notificationEnabled && !notificationPermission" class="warning-message">
-      <strong>Importante:</strong> Necesitas otorgar permisos de notificación para recibir recordatorios.
+    <!-- Advertencia de permisos -->
+    <div
+      *ngIf="notificationEnabled && !notificationPermission"
+      class="warning-message"
+    >
+      <strong>Importante:</strong> Necesitas otorgar permisos de notificación
+      para recibir recordatorios.
     </div>
   </div>
 
-  <!-- Botón para tomar foto (opcional) -->
+  <!-- Botón para foto (opcional) -->
   <button type="button" (click)="takePhoto()" class="camera-btn">
     📷 Tomar Foto
   </button>
   <div *ngIf="photo" class="photo-preview">
-    <img [src]="photo" alt="Foto tomada" class="preview-image">
+    <img [src]="photo" alt="Foto tomada" class="preview-image" />
   </div>
 
-  <!-- Mensaje de errores generales -->
+  <!-- Mensajes de error generales -->
   <div *ngIf="generalError" class="error-message general-error">
     {{ generalError }}
   </div>
