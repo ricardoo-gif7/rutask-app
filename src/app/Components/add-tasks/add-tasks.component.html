@@ -1,34 +1,137 @@
 <div class="add-task-container container">
-    <h2>Agregar Tarea</h2>
-    <label for="title">Título (Actividad o Materia):</label>
-    <input id="title" [(ngModel)]="title" placeholder="Título de la tarea" />
+  <h2>Agregar Tarea</h2>
   
-    <label for="description">Descripción:</label>
-    <textarea id="description" [(ngModel)]="description" placeholder="Descripción de la tarea"></textarea>
-  
-    <label for="dueDate">Fecha Límite:</label>
-    <!-- Usamos datetime-local para incluir fecha y hora -->
-    <input type="datetime-local" id="dueDate" [(ngModel)]="dueDate" />
-  
-    <label for="type">Tipo:</label>
-    <select id="type" [(ngModel)]="type">
-      <option value="house">Tarea del Hogar</option>
-      <option value="school">Deber Escolar</option>
-    </select>
-  
-    <!-- Solo para deberes: se ingresa la materia -->
-    <div *ngIf="type === 'school'">
-      <label for="subject">Materia:</label>
-      <input id="subject" [(ngModel)]="subject" placeholder="Materia" />
-    </div>
-  
-    <!-- Botón para tomar foto (opcional) -->
-    <button type="button" (click)="takePhoto()" class="camera-btn">📷 Tomar Foto</button>
-    <div *ngIf="photo" class="photo-preview">
-      <img [src]="photo" alt="Foto tomada" class="preview-image">
-    </div>
-  
-    <button (click)="saveTask()" class="submit-btn">Guardar Tarea</button>
-    <button routerLink="/tasks-list" class="cancel-btn">Cancelar</button>
+  <!-- Título (requerido) -->
+  <label for="title">Título (Actividad o Materia) *:</label>
+  <input 
+    id="title" 
+    [(ngModel)]="title" 
+    placeholder="Título de la tarea"
+    [class.error]="titleError"
+    (blur)="validateTitle()"
+  />
+  <div *ngIf="titleError" class="error-message">{{ titleError }}</div>
+
+  <!-- Descripción (opcional) -->
+  <label for="description">Descripción:</label>
+  <textarea 
+    id="description" 
+    [(ngModel)]="description" 
+    placeholder="Descripción de la tarea (opcional)"
+  ></textarea>
+
+  <!-- Tipo de tarea -->
+  <label for="type">Tipo *:</label>
+  <select id="type" [(ngModel)]="type">
+    <option value="house">Tarea del Hogar</option>
+    <option value="school">Deber Escolar</option>
+  </select>
+
+  <!-- Solo para deberes: se ingresa la materia -->
+  <div *ngIf="type === 'school'">
+    <label for="subject">Materia *:</label>
+    <input 
+      id="subject" 
+      [(ngModel)]="subject" 
+      placeholder="Materia"
+      [class.error]="subjectError"
+      (blur)="validateSubject()"
+    />
+    <div *ngIf="subjectError" class="error-message">{{ subjectError }}</div>
   </div>
-  
+
+  <!-- Checkbox para tarea diaria -->
+  <div class="checkbox-container">
+    <input 
+      type="checkbox" 
+      id="isDaily" 
+      [(ngModel)]="isDaily"
+      (change)="onDailyChange()"
+    />
+    <label for="isDaily" class="checkbox-label">Esta es una tarea diaria</label>
+  </div>
+
+  <!-- Fecha límite (solo si no es tarea diaria) -->
+  <div *ngIf="!isDaily">
+    <label for="dueDate">Fecha Límite *:</label>
+    <input 
+      type="date" 
+      id="dueDate" 
+      [(ngModel)]="dueDate"
+      [class.error]="dueDateError"
+      (blur)="validateDueDate()"
+    />
+    <div *ngIf="dueDateError" class="error-message">{{ dueDateError }}</div>
+  </div>
+
+  <!-- Hora límite (separada) -->
+  <div *ngIf="!isDaily">
+    <label for="dueTime">Hora Límite:</label>
+    <input 
+      type="time" 
+      id="dueTime" 
+      [(ngModel)]="dueTime"
+      [class.error]="dueTimeError"
+      (blur)="validateDueTime()"
+    />
+    <div *ngIf="dueTimeError" class="error-message">{{ dueTimeError }}</div>
+  </div>
+
+  <!-- Configuración de notificaciones -->
+  <div class="notification-section">
+    <h3>Notificaciones</h3>
+    
+    <!-- Habilitar notificaciones -->
+    <div class="checkbox-container">
+      <input 
+        type="checkbox" 
+        id="notificationEnabled" 
+        [(ngModel)]="notificationEnabled"
+        (change)="onNotificationToggle()"
+      />
+      <label for="notificationEnabled" class="checkbox-label">
+        Recibir notificaciones
+      </label>
+    </div>
+
+    <!-- Hora de notificación -->
+    <div *ngIf="notificationEnabled">
+      <label for="notificationTime">Hora de notificación *:</label>
+      <input 
+        type="time" 
+        id="notificationTime" 
+        [(ngModel)]="notificationTime"
+        [class.error]="notificationTimeError"
+        (blur)="validateNotificationTime()"
+      />
+      <div *ngIf="notificationTimeError" class="error-message">{{ notificationTimeError }}</div>
+      <small class="help-text">
+        {{ isDaily ? 'Recibirás una notificación diaria a esta hora' : 'Recibirás una notificación en la fecha y hora especificadas' }}
+      </small>
+    </div>
+
+    <!-- Advertencia sobre permisos -->
+    <div *ngIf="notificationEnabled && !notificationPermission" class="warning-message">
+      <strong>Importante:</strong> Necesitas otorgar permisos de notificación para recibir recordatorios.
+    </div>
+  </div>
+
+  <!-- Botón para tomar foto (opcional) -->
+  <button type="button" (click)="takePhoto()" class="camera-btn">
+    📷 Tomar Foto
+  </button>
+  <div *ngIf="photo" class="photo-preview">
+    <img [src]="photo" alt="Foto tomada" class="preview-image">
+  </div>
+
+  <!-- Mensaje de errores generales -->
+  <div *ngIf="generalError" class="error-message general-error">
+    {{ generalError }}
+  </div>
+
+  <!-- Botones de acción -->
+  <button (click)="saveTask()" class="submit-btn" [disabled]="isSaving">
+    {{ isSaving ? 'Guardando...' : 'Guardar Tarea' }}
+  </button>
+  <button routerLink="/tasks-list" class="cancel-btn">Cancelar</button>
+</div>

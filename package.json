@@ -21,6 +21,7 @@
     "@capacitor/camera": "^7.0.0",
     "@capacitor/cli": "^7.1.0",
     "@capacitor/core": "^7.1.0",
+    "@capacitor/local-notifications": "^7.0.1",
     "@ionic/pwa-elements": "^3.3.0",
     "android": "^0.0.8",
     "ngx-webstorage": "^19.0.1",
